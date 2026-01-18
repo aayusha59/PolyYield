@@ -63,8 +63,22 @@ export function DepositModal({
 
   const numericAmount = parseFloat(amount) || 0
   const positionEnum = position === "yes" ? Position.Yes : Position.No
-  const potentialPayout = numericAmount > 0 ? numericAmount / (currentOdds / 100) : 0
-  const potentialProfit = potentialPayout - numericAmount
+  
+  // Calculate yield-based profit (not odds-based)
+  // Yield comes from DeFi lending at ~12% APY
+  const APY = 0.12 // 12% annual yield
+  
+  // Calculate days until market expiry
+  const expiryDate = marketExpiry ? new Date(marketExpiry) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+  const daysUntilExpiry = Math.max(1, Math.ceil((expiryDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+  
+  // Calculate yield: principal × APY × (days/365)
+  const estimatedYield = numericAmount * APY * (daysUntilExpiry / 365)
+  
+  // Potential profit is the yield (winners share the pool's yield)
+  // In best case, you could get ~2x your yield share if you're in minority winning side
+  const potentialProfit = estimatedYield * 2 // Estimate: your yield + portion of loser's yield
+  const potentialPayout = numericAmount + potentialProfit
 
   const handleDeposit = async () => {
     if (numericAmount <= 0) return
