@@ -16,7 +16,7 @@ export interface DepositState {
 }
 
 export interface UseDepositReturn extends DepositState {
-  deposit: (amount: number, marketId: string, marketQuestion: string, expiry: number, position: Position) => Promise<string | null>
+  deposit: (amount: number, marketId: string, position: Position) => Promise<string | null>
   refreshBalance: () => Promise<void>
   clearError: () => void
   clearTx: () => void
@@ -50,8 +50,6 @@ export function useDeposit(): UseDepositReturn {
   const deposit = useCallback(async (
     amount: number,
     marketId: string,
-    marketQuestion: string,
-    expiry: number,
     position: Position
   ): Promise<string | null> => {
     if (!publicKey || !signTransaction || !connected) {
@@ -92,8 +90,6 @@ export function useDeposit(): UseDepositReturn {
         userPublicKey: publicKey,
         amount,
         marketId,
-        marketQuestion,
-        expiry,
         position,
       })
 
