@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { GL } from "./gl"
 import { Pill } from "./pill"
 import { Button } from "./ui/button"
@@ -13,7 +14,6 @@ export function Hero() {
       <GL hovering={hovering} />
 
       <div className="text-center relative z-10">
-        <Pill className="mb-6">BUILT ON POLYMARKET</Pill>
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-sentient">
           Predict the <br />
           <i className="font-light">future,</i> risk nothing
@@ -38,6 +38,23 @@ export function Hero() {
             [Explore Markets]
           </Button>
         </Link>
+
+        <div className="flex items-center justify-center gap-8 mt-8 relative z-20">
+          <Image
+            src="/polymarket.png"
+            alt="Polymarket"
+            width={192}
+            height={48}
+            className="h-12 w-auto object-contain"
+          />
+          <Image
+            src="/solana.png"
+            alt="Solana"
+            width={120}
+            height={30}
+            className="h-7 w-auto object-contain"
+          />
+        </div>
       </div>
     </div>
   )

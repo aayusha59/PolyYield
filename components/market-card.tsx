@@ -106,8 +106,8 @@ export function MarketCard({ market }: MarketCardProps) {
           <button
             onClick={() => setSelectedPosition("yes")}
             className={`py-3 font-mono text-sm uppercase transition-all duration-200 border ${selectedPosition === "yes"
-                ? "bg-emerald-500/20 border-emerald-500 text-emerald-400"
-                : "border-border/50 text-foreground/60 hover:border-emerald-500/50 hover:text-emerald-400"
+              ? "bg-emerald-500/20 border-emerald-500 text-emerald-400"
+              : "border-border/50 text-foreground/60 hover:border-emerald-500/50 hover:text-emerald-400"
               }`}
           >
             Predict Yes
@@ -115,8 +115,8 @@ export function MarketCard({ market }: MarketCardProps) {
           <button
             onClick={() => setSelectedPosition("no")}
             className={`py-3 font-mono text-sm uppercase transition-all duration-200 border ${selectedPosition === "no"
-                ? "bg-rose-500/20 border-rose-500 text-rose-400"
-                : "border-border/50 text-foreground/60 hover:border-rose-500/50 hover:text-rose-400"
+              ? "bg-rose-500/20 border-rose-500 text-rose-400"
+              : "border-border/50 text-foreground/60 hover:border-rose-500/50 hover:text-rose-400"
               }`}
           >
             Predict No
