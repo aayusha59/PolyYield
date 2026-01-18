@@ -1,11 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useConnection, useWallet } from "@solana/wallet-adapter-react"
+import { useWallet } from "@solana/wallet-adapter-react"
 import { Position } from "@/lib/solana/constants"
-import { PublicKey } from "@solana/web3.js"
-
-const MEMO_PROGRAM_ID = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcQb")
 
 export interface UserPosition {
   id: string
@@ -22,92 +19,37 @@ export interface UserPosition {
 const MOCK_APY = 0.12
 
 export function usePositions() {
-  const { connection } = useConnection()
   const { publicKey } = useWallet()
   const [positions, setPositions] = useState<UserPosition[]>([])
   const [totalYield, setTotalYield] = useState(0)
   const [totalValue, setTotalValue] = useState(0)
 
-  // Fetch positions from chain history
+  // Load positions from local storage
   useEffect(() => {
     if (!publicKey) {
       setPositions([])
       return
     }
 
-    const fetchPositions = async () => {
+    const loadPositions = () => {
       try {
-        // Fetch last 20 signatures
-        const signatures = await connection.getSignaturesForAddress(publicKey, { limit: 20 })
-        if (signatures.length === 0) return
-
-        // Fetch parsed transactions
-        const txs = await connection.getParsedTransactions(
-          signatures.map(s => s.signature),
-          { maxSupportedTransactionVersion: 0 }
-        )
-
-        const loadedPositions: UserPosition[] = []
-
-        txs.forEach(tx => {
-          if (!tx || !tx.meta || tx.meta.err) return
-
-          // Look for Memo instruction
-          const instructions = tx.transaction.message.instructions
-          for (const ix of instructions) {
-            if (ix.programId.equals(MEMO_PROGRAM_ID)) {
-              // Handle parsed vs raw instruction
-              let memoString = ""
-              if ("parsed" in ix) {
-                memoString = ix.parsed as string
-              } else if ("data" in ix) {
-                // If data is base58 encoded
-                // Not typical for getParsedTransactions but handling safety
-                // Ideally parsed transactions handle SplMemo
-                // We'll rely on it being parsed or check raw data decoding if needed
-                // For simplicity assuming parsed for now as standard RPC does it
-                continue 
-              }
-
-              try {
-                // Try to parse our JSON format
-                if (memoString.includes("polyield_position")) {
-                  const data = JSON.parse(memoString)
-                  if (data.type === "polyield_position") {
-                    loadedPositions.push({
-                      id: tx.transaction.signatures[0], // Use tx sig as ID
-                      marketId: data.marketId,
-                      marketQuestion: data.marketQuestion,
-                      position: data.position,
-                      amount: data.amount,
-                      timestamp: data.timestamp,
-                      expiryTimestamp: data.expiry,
-                      status: "active"
-                    })
-                  }
-                }
-              } catch (e) {
-                // Not our memo or invalid JSON, ignore
-              }
-            }
-          }
-        })
-
-        if (loadedPositions.length > 0) {
-          setPositions(loadedPositions)
-          calculateTotals(loadedPositions)
+        const stored = localStorage.getItem(`polyield_positions_${publicKey.toBase58()}`)
+        if (stored) {
+          const parsed = JSON.parse(stored)
+          setPositions(parsed)
+          calculateTotals(parsed)
         }
       } catch (e) {
-        console.error("Failed to fetch positions", e)
+        console.error("Failed to load positions", e)
       }
     }
 
-    fetchPositions()
+    loadPositions()
     
-    // Poll every 15 seconds
-    const interval = setInterval(fetchPositions, 15000)
-    return () => clearInterval(interval)
-  }, [publicKey, connection])
+    // Listen for storage events to update real-time
+    window.addEventListener("storage", loadPositions)
+    return () => window.removeEventListener("storage", loadPositions)
+  }, [publicKey])
 
   const calculateTotals = (currentPositions: UserPosition[]) => {
     const now = Date.now()
@@ -157,6 +99,11 @@ export function usePositions() {
     const updated = [...positions, newPosition]
     setPositions(updated)
     calculateTotals(updated)
+    
+    localStorage.setItem(
+      `polyield_positions_${publicKey.toBase58()}`, 
+      JSON.stringify(updated)
+    )
   }
 
   return {

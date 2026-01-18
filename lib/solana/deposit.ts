@@ -24,9 +24,6 @@ import {
   Position,
 } from "./constants"
 
-// Memo Program ID
-export const MEMO_PROGRAM_ID = new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcQb")
-
 /**
  * Get the vault PDA address
  */
@@ -136,8 +133,6 @@ export interface DepositParams {
   userPublicKey: PublicKey
   amount: number // in USDC (e.g., 10.5 for $10.50)
   marketId: string
-  marketQuestion: string
-  expiry: number
   position: Position
 }
 
@@ -155,7 +150,7 @@ export interface DepositResult {
 export async function buildDepositTransaction(
   params: DepositParams
 ): Promise<DepositResult> {
-  const { connection, userPublicKey, amount, marketId, marketQuestion, expiry, position } = params
+  const { connection, userPublicKey, amount, marketId, position } = params
 
   // Get PDAs
   const [vault] = getVaultPDA()
@@ -227,25 +222,6 @@ export async function buildDepositTransaction(
       userPublicKey, // owner
       amountLamports
     )
-  )
-
-  // Add Memo Instruction to persist position data on-chain
-  const memoData = JSON.stringify({
-    type: "polyield_position",
-    marketId,
-    marketQuestion,
-    position,
-    amount,
-    expiry,
-    timestamp: Date.now()
-  })
-
-  transaction.add(
-    new TransactionInstruction({
-      keys: [],
-      programId: MEMO_PROGRAM_ID,
-      data: Buffer.from(memoData, "utf-8"),
-    })
   )
 
   /* 
