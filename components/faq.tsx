@@ -116,10 +116,7 @@ export function FAQ() {
                         ))}
                     </div>
                 </div>
-            </a>
-        </p>
-        </div >
-      </div >
-    </section >
-  )
+            </div>
+        </section>
+    )
 }
