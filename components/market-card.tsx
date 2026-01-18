@@ -1,19 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { Calendar, TrendingUp, Percent } from "lucide-react"
+import { Calendar, TrendingUp, ExternalLink } from "lucide-react"
 import { Button } from "./ui/button"
+import Image from "next/image"
 
-interface Market {
-  id: string
-  question: string
-  category: string
-  totalPool: number
-  yesPool: number
-  noPool: number
-  endDate: string
-  apy: number
-}
+import type { Market } from "@/lib/types/polymarket"
 
 interface MarketCardProps {
   market: Market
@@ -22,8 +14,13 @@ interface MarketCardProps {
 export function MarketCard({ market }: MarketCardProps) {
   const [selectedPosition, setSelectedPosition] = useState<"yes" | "no" | null>(null)
 
-  const yesPercentage = Math.round((market.yesPool / market.totalPool) * 100)
-  const noPercentage = 100 - yesPercentage
+  // Use actual prices if available, otherwise calculate from pools
+  const yesPercentage = market.yesPrice 
+    ? Math.round(market.yesPrice * 100) 
+    : Math.round((market.yesPool / market.totalPool) * 100)
+  const noPercentage = market.noPrice 
+    ? Math.round(market.noPrice * 100) 
+    : 100 - yesPercentage
 
   const formatCurrency = (value: number) => {
     if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`
@@ -31,19 +28,42 @@ export function MarketCard({ market }: MarketCardProps) {
     return `$${value}`
   }
 
+  const polymarketUrl = market.slug 
+    ? `https://polymarket.com/event/${market.slug}` 
+    : "https://polymarket.com"
+
   return (
-    <div className="bg-[#0a0a0a] border border-border/50 p-6 hover:border-primary/30 transition-all duration-300 group">
-      <div className="flex items-center justify-between mb-4">
+    <div className="bg-[#0a0a0a] border border-border/50 p-6 hover:border-primary/30 transition-all duration-300 group relative">
+      {/* Market image */}
+      {market.image && (
+        <div className="absolute top-4 right-4 w-10 h-10 rounded-full overflow-hidden border border-border/30 opacity-60 group-hover:opacity-100 transition-opacity">
+          <Image
+            src={market.image}
+            alt=""
+            width={40}
+            height={40}
+            className="object-cover"
+            unoptimized
+          />
+        </div>
+      )}
+      
+      <div className="flex items-center gap-2 mb-4">
         <span className="font-mono text-xs text-primary uppercase tracking-wider px-2 py-1 bg-primary/10 border border-primary/20">
           {market.category}
         </span>
-        <div className="flex items-center gap-1 text-foreground/40">
-          <Percent className="w-3 h-3" />
-          <span className="font-mono text-xs">{market.apy}% APY</span>
-        </div>
+        <a 
+          href={polymarketUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity text-foreground/40 hover:text-primary"
+          title="View on Polymarket"
+        >
+          <ExternalLink className="w-4 h-4" />
+        </a>
       </div>
 
-      <h3 className="text-lg font-sentient mb-6 leading-tight min-h-[56px]">{market.question}</h3>
+      <h3 className="text-lg font-sentient mb-6 leading-tight min-h-[56px] pr-12">{market.question}</h3>
 
       {/* Prediction bar */}
       <div className="mb-4">
@@ -83,12 +103,19 @@ export function MarketCard({ market }: MarketCardProps) {
 
       {/* Market info */}
       <div className="flex items-center justify-between pt-4 border-t border-border/30">
-        <div className="flex items-center gap-2 text-foreground/40">
-          <TrendingUp className="w-4 h-4" />
-          <span className="font-mono text-xs">{formatCurrency(market.totalPool)} Pool</span>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1.5 text-foreground/40">
+            <TrendingUp className="w-3.5 h-3.5" />
+            <span className="font-mono text-xs">{formatCurrency(market.totalPool)}</span>
+          </div>
+          {market.volume && market.volume > 0 && (
+            <div className="flex items-center gap-1.5 text-foreground/40">
+              <span className="font-mono text-xs text-emerald-500/70">{formatCurrency(market.volume)} vol</span>
+            </div>
+          )}
         </div>
-        <div className="flex items-center gap-2 text-foreground/40">
-          <Calendar className="w-4 h-4" />
+        <div className="flex items-center gap-1.5 text-foreground/40">
+          <Calendar className="w-3.5 h-3.5" />
           <span className="font-mono text-xs">{market.endDate}</span>
         </div>
       </div>

@@ -13,7 +13,13 @@ export const Header = () => {
           <Logo className="w-[160px] md:w-[180px]" />
         </Link>
         <nav className="flex max-lg:hidden absolute left-1/2 -translate-x-1/2 items-center justify-center gap-x-10">
-          {["Markets", "How It Works", "Leaderboard", "FAQ"].map((item) => (
+          <Link
+            className="uppercase inline-block font-mono text-foreground/60 hover:text-foreground/100 duration-150 transition-colors ease-out"
+            href="/markets"
+          >
+            Markets
+          </Link>
+          {["How It Works", "Leaderboard", "FAQ"].map((item) => (
             <Link
               className="uppercase inline-block font-mono text-foreground/60 hover:text-foreground/100 duration-150 transition-colors ease-out"
               href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
