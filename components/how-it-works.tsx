@@ -155,75 +155,71 @@ export function HowItWorks() {
                 </div>
               </div>
 
-              {/* Example Comparison */}
+              {/* Example - Your Deposit */}
               <div className="mt-8">
                 <p className="font-mono text-xs text-foreground/60 uppercase tracking-wider mb-6 text-center">
-                  Real Example: 30-Day Market
+                  Example: Your $100 Deposit (30-day market)
                 </p>
-                <div className="grid md:grid-cols-2 gap-6">
-                  {/* Small Pool */}
-                  <div className="bg-background/30 border border-border/30 p-5">
+                <div className="max-w-md mx-auto">
+                  <div className="bg-primary/5 border border-primary/30 p-6">
                     <div className="flex items-center gap-2 mb-4">
-                      <Users className="w-4 h-4 text-foreground/40" />
-                      <span className="font-mono text-xs text-foreground/60">10 users × $100</span>
+                      <Wallet className="w-4 h-4 text-primary" />
+                      <span className="font-mono text-sm text-primary">You deposit $100</span>
                     </div>
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       <div className="flex justify-between items-baseline text-sm">
-                        <span className="font-mono text-foreground/60">Pool Size</span>
-                        <span className="font-mono text-foreground font-medium">$1,000</span>
+                        <span className="font-mono text-foreground/60">Your Deposit</span>
+                        <span className="font-mono text-foreground font-medium">$100.00</span>
                       </div>
-                      <div className="bg-emerald-500/10 border border-emerald-500/20 px-3 py-2 -mx-1">
+
+                      <div className="bg-emerald-500/10 border border-emerald-500/30 px-3 py-3 -mx-1">
                         <div className="flex justify-between items-baseline text-sm mb-1">
-                          <span className="font-mono text-foreground/60">Yield Generated</span>
-                          <span className="font-mono text-emerald-400">~$10</span>
+                          <span className="font-mono text-foreground/60">Your Yield Contribution</span>
+                          <span className="font-mono text-emerald-400 font-medium">~$1.00</span>
                         </div>
                         <p className="text-[10px] text-foreground/40 font-mono">
-                          $1,000 × 12% APY × (30/365) days
+                          $100 × 12% APY × (30/365) = ~$1
                         </p>
                       </div>
-                      <div className="pt-2 border-t border-border/20">
-                        <div className="flex justify-between items-baseline mb-1">
-                          <span className="font-mono text-xs text-foreground/50">If You Win</span>
-                          <div className="text-right">
-                            <span className="font-mono text-emerald-400 text-base font-medium">+$2</span>
-                          </div>
-                        </div>
-                        <p className="text-[10px] text-foreground/40 font-mono text-right">
-                          $10 yield ÷ 5 winners = $2 each
-                        </p>
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Large Pool */}
-                  <div className="bg-primary/5 border border-primary/30 p-5">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Users className="w-4 h-4 text-primary" />
-                      <span className="font-mono text-xs text-primary">1,000 users × $100</span>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-baseline text-sm">
-                        <span className="font-mono text-foreground/60">Pool Size</span>
-                        <span className="font-mono text-foreground font-medium">$100,000</span>
-                      </div>
-                      <div className="bg-emerald-500/10 border border-emerald-500/30 px-3 py-2 -mx-1">
-                        <div className="flex justify-between items-baseline text-sm mb-1">
-                          <span className="font-mono text-foreground/60">Yield Generated</span>
-                          <span className="font-mono text-emerald-400 font-medium">~$1,000</span>
-                        </div>
-                        <p className="text-[10px] text-primary/60 font-mono">
-                          $100,000 × 12% APY × (30/365) days
-                        </p>
-                      </div>
-                      <div className="pt-2 border-t border-primary/20">
-                        <div className="flex justify-between items-baseline mb-1">
-                          <span className="font-mono text-xs text-foreground/50">If You Win</span>
+                      <div className="border-t border-primary/20 pt-4 space-y-3">
+                        <div className="flex justify-between items-baseline">
+                          <span className="font-mono text-sm text-foreground/60">If You Win</span>
                           <div className="text-right">
-                            <span className="font-mono text-emerald-400 text-base font-medium">+$2</span>
+                            <span className="font-mono text-emerald-400 text-lg font-medium">~$102.00</span>
+                            <p className="text-[10px] text-emerald-400/60 font-mono">$100 + ~$2 yield profit</p>
                           </div>
                         </div>
-                        <p className="text-[10px] text-primary/60 font-mono text-right">
-                          $1,000 yield ÷ 500 winners = $2 each
+                        <div className="flex justify-between items-baseline">
+                          <span className="font-mono text-sm text-foreground/60">If You Lose</span>
+                          <div className="text-right">
+                            <span className="font-mono text-amber-400 text-lg font-medium">$100.00</span>
+                            <p className="text-[10px] text-amber-400/60 font-mono">full refund, zero loss</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Yield Breakdown */}
+                      <div className="bg-background/50 border border-border/30 p-4 mt-2">
+                        <p className="font-mono text-xs text-foreground/60 mb-3">Yield Profit Breakdown:</p>
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center">
+                            <span className="font-mono text-sm text-emerald-400">Your yield</span>
+                            <span className="font-mono text-sm text-emerald-400">$1.00</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="font-mono text-sm text-amber-400">+ Loser&apos;s yield</span>
+                            <span className="font-mono text-sm text-amber-400">$1.00</span>
+                          </div>
+                          <div className="border-t border-border/50 pt-2 mt-2">
+                            <div className="flex justify-between items-center">
+                              <span className="font-mono text-sm text-foreground font-medium">= Total Profit</span>
+                              <span className="font-mono text-sm text-primary font-medium">$2.00</span>
+                            </div>
+                          </div>
+                        </div>
+                        <p className="font-mono text-[10px] text-foreground/40 mt-3 italic">
+                          Winners split all yield generated from the pool
                         </p>
                       </div>
                     </div>
@@ -232,10 +228,10 @@ export function HowItWorks() {
 
                 <div className="mt-6 text-center space-y-2">
                   <p className="font-mono text-xs text-primary/80">
-                    100x more users = 100x larger prize pool · Same zero risk
+                    Winners get their principal + all yield from the pool
                   </p>
                   <p className="font-mono text-xs text-foreground/50 italic">
-                    Longer markets = more time earning yield = bigger prizes
+                    Bigger pools & longer markets = more yield to share
                   </p>
                 </div>
               </div>
