@@ -16,7 +16,7 @@ export function Markets() {
       : markets.filter((m) => m.category === selectedCategory)
 
   return (
-    <section id="markets" className="py-24 border-t border-border/50">
+    <section id="markets" className="py-24">
       <div className="container">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>

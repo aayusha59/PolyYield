@@ -14,7 +14,7 @@ export const MobileMenu = ({ className }: MobileMenuProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const menuItems = [
-    { name: "Markets", href: "#markets" },
+    { name: "Markets", href: "/markets" },
     { name: "How It Works", href: "#how-it-works" },
     { name: "Leaderboard", href: "#leaderboard" },
     { name: "FAQ", href: "#faq" },

@@ -23,12 +23,12 @@ export function Hero() {
           deposit back.
         </p>
 
-        <Link className="contents max-sm:hidden" href="/#markets">
+        <Link className="contents max-sm:hidden" href="/markets">
           <Button className="mt-14" onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
             [Explore Markets]
           </Button>
         </Link>
-        <Link className="contents sm:hidden" href="/#markets">
+        <Link className="contents sm:hidden" href="/markets">
           <Button
             size="sm"
             className="mt-14"
