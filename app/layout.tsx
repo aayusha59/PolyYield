@@ -4,6 +4,7 @@ import { Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { Header } from "@/components/header"
 import AppWalletProvider from "@/components/AppWalletProvider"
+import { SupabaseStatus } from "@/components/supabase-status"
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -11,7 +12,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Polyield",
+  title: "PolyYield",
   description: "No-Lose Prediction Markets - Your principal is always protected",
   generator: "v0.app",
 }
@@ -27,6 +28,7 @@ export default function RootLayout({
         <AppWalletProvider>
           <Header />
           {children}
+          <SupabaseStatus />
         </AppWalletProvider>
       </body>
     </html>

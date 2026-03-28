@@ -25,3 +25,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local docs
+BRANCH_SUMMARY.md
+PR_DESCRIPTION.md
+DATABASE_IMPLEMENTATION.md
+scripts/get-devnet-usdc.md
